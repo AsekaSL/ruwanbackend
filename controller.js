@@ -14,25 +14,36 @@ const getLink = () => {
 
 const setLink = (req) => {
     return new Promise((resolve, reject) => {
-        Link.updateOne({_id: "67ebfa7d04cdc343ece9b484"}, {$set: {link: req.link}})
-            .then(response => {
-                resolve(response)
-            })
-            .catch(error => {
-                reject(error);
-            });
+        const link = new Link({link: req.link});
+        link.save()
+        .then((response) => {
+            resolve(response);
+        })
+        .catch ((error) => {
+            reject(error);
+        });
+        
+        
     });
 };
 
 const deleteLink = (req) => {
     return new Promise((resolve, reject) => {
-        Link.deleteMany()
+        Link.find()
+        .then((response) => {
+            
+            Link.deleteOne({_id: response[0].id})
             .then(response => {
                 resolve(response)
             })
             .catch(error => {
                 reject(error);
             });
+        })
+        .catch ((error) => {
+            reject(error);
+        });
+        
     })
 }
 
